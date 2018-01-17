@@ -1,0 +1,11 @@
+.navlink {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+@media (min-width: 576px) {
+  .navlink {
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+  }
+}
