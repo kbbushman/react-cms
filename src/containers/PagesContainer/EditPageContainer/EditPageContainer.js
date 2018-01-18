@@ -76,7 +76,7 @@ class EditPageContainer extends Component {
       <div className='container'>
         <h1 className='mb-3'>Edit Page </h1>
         <div style={{overflow: 'hidden'}}>
-          <Link className='btn btn-primary float-right mb-3 mr-2' to={`/${this.props.match.params.id}`}>View</Link>
+          <Link className='btn btn-primary float-right mb-3 mr-2' to={`/${this.state.url}`}>View</Link>
           <Link className='btn btn-secondary float-right mb-1 mr-2' to={`/dashboard/pages`}>Cancel</Link>
         </div>
         <form onSubmit={this.onSubmitHandler}>

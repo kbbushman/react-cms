@@ -73,7 +73,7 @@ class EditPostContainer extends Component {
       <div className='container'>
         <h1>Edit Post</h1>
         <div style={{overflow: 'hidden'}}>
-          {/* <Link className='btn btn-primary float-right mb-3 mr-2' to={`/${this.props.match.params.id}`}>View</Link> */}
+          <Link className='btn btn-primary float-right mb-3 mr-2' to={`/posts/${this.state.slug}`}>View</Link>
           <Link className='btn btn-secondary float-right mb-1 mr-2' to={`/dashboard/pages`}>Cancel</Link>
         </div>
         <form onSubmit={this.onSubmitHandler}>
