@@ -10,11 +10,13 @@ class AddPageContainer extends Component {
   }
 
   onTitleChange = (event) => {
-    this.setState({title: event.target.value});
+    const cleanUrl = event.target.value.toLowerCase().trim().replace(/[^a-zA-Z0-9 -]+/g, '').replace(/\s+/g, '-');
+    this.setState({title: event.target.value, url: cleanUrl});
   }
 
   onURLChange = (event) => {
-    this.setState({url: event.target.value});
+    const cleanUrl = event.target.value.toLowerCase().trim().replace(/[^a-zA-Z0-9 -]+/g, '').replace(/\s+/g, '-');
+    this.setState({url: cleanUrl});
   }
 
   onBodyChange = (event) => {
@@ -61,8 +63,9 @@ class AddPageContainer extends Component {
             <input id='title' className='form-control' type='text' value={this.state.title} placeholder='Title' onChange={(event) => this.onTitleChange(event)} />
           </div>
           <div className='form-group'>
-            <label htmlFor='url'>URL</label>
-            <input id='url' className='form-control' type='text' value={this.state.url} placeholder='URL' onChange={(event) => this.onURLChange(event)} />
+            <label htmlFor='url'>URL</label><br />
+            <small>http://localhost:3000/...</small>
+            <input id='url' className='form-control' type='text' value={this.state.url} placeholder='new-page-url' onChange={(event) => this.onURLChange(event)} />
           </div>
           <div className='form-group'>
             <label htmlFor='body'>Content</label>

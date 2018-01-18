@@ -36,7 +36,8 @@ class EditPageContainer extends Component {
   }
 
   onURLChange = (event) => {
-    this.setState({url: event.target.value});
+    const cleanUrl = event.target.value.toLowerCase().trim().replace(/[^a-zA-Z0-9 -]+/g, '').replace(/\s+/g, '-');
+    this.setState({url: cleanUrl});
   }
 
   onBodyChange = (event) => {
