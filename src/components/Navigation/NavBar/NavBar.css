@@ -1,0 +1,11 @@
+.navbarShow {
+  transform: translateX(0);
+}
+
+.navbarHide {
+  transform: translateX(-100%);
+}
+
+nav.navbarHide {
+  height: 0;
+}

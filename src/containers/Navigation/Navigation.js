@@ -30,14 +30,15 @@ class Navigation extends Component {
   }
 
   render() {
-
-    if(!this.state.navList.length) {
+    if(window.location.pathname.includes('/dashboard')) {
       return null;
     }
-  
+
     return (
       <Aux>
-        <NavBar navList={this.state.navList} />
+        <NavBar
+          navList={this.state.navList}
+          show={this.props.show} />
       </Aux>
     );
   }
