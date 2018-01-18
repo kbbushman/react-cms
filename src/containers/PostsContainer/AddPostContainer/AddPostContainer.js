@@ -10,11 +10,13 @@ class AddPostContainer extends Component {
   }
 
   onTitleChange = (event) => {
-    this.setState({title: event.target.value});
+    const cleanSlug = event.target.value.toLowerCase().trim().replace(/[^a-zA-Z0-9 -]+/g, '').replace(/\s+/g, '-');
+    this.setState({title: event.target.value, slug: cleanSlug});
   }
 
   onSlugChange = (event) => {
-    this.setState({slug: event.target.value});
+    const cleanSlug = event.target.value.toLowerCase().trim().replace(/[^a-zA-Z0-9 -]+/g, '').replace(/\s+/g, '-');
+    this.setState({slug: cleanSlug});
   }
 
   onBodyChange = (event) => {

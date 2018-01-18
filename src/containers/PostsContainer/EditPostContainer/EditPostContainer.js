@@ -35,7 +35,8 @@ class EditPostContainer extends Component {
   }
 
   onSlugChange = (event) => {
-    this.setState({slug: event.target.value});
+    const cleanSlug = event.target.value.toLowerCase().trim().replace(/[^a-zA-Z0-9 -]+/g, '').replace(/\s+/g, '-');
+    this.setState({slug: cleanSlug});
   }
 
   onBodyChange = (event) => {
