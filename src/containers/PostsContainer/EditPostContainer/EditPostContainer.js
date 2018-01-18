@@ -6,7 +6,10 @@ class EditPostContainer extends Component {
   state = {
     title: '',
     slug: '',
-    body: ''
+    body: '',
+    dateCreated: '',
+    timeCreated: '',
+    updated: ''
   }
 
   componentDidMount() {
@@ -15,7 +18,14 @@ class EditPostContainer extends Component {
       .then(response => {
         const postData = response.data;
         // console.log(postData)
-        this.setState({title: postData.title, slug: postData.slug, body: postData.body})
+        this.setState({
+          title: postData.title,
+          slug: postData.slug,
+          body: postData.body,
+          dateCreated: postData.dateCreated,
+          timeCreated: postData.timeCreated,
+          updated: postData.updataed
+        })
       })
       .catch(err => console.log(err));
   }
@@ -38,7 +48,10 @@ class EditPostContainer extends Component {
     const updatedPost = {
       title: this.state.title,
       slug: this.state.slug,
-      body: this.state.body
+      body: this.state.body,
+      dateCreated: this.state.dateCreated,
+      timeCreated: this.state.timeCreated,
+      updated: new Date().toLocaleString()
     }
     axios.put(`https://reactcms-v1.firebaseio.com/posts/${postId}.json`, updatedPost)
       .then(response => {

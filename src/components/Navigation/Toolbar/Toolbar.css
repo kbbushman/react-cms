@@ -1,0 +1,11 @@
+.toolbar-show {
+  transform: translateX(0);
+}
+
+.toolbar-hide {
+  transform: translateX(-100%);
+}
+
+nav.toolbar-hide {
+  height: 0;
+}

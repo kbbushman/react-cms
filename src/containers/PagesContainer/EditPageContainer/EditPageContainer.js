@@ -7,7 +7,10 @@ class EditPageContainer extends Component {
   state = {
     title: '',
     url: '',
-    body: ''
+    body: '',
+    dateCreated: '',
+    timeCreated: '',
+    updated: ''
   }
 
   componentDidMount() {
@@ -15,8 +18,15 @@ class EditPageContainer extends Component {
     axios.get(`https://reactcms-v1.firebaseio.com/pages/${pageId}.json/`)
       .then(response => {
         const pageData = response.data;
-        // console.log(pageData)
-        this.setState({title: pageData.title, url: pageData.url, body: pageData.body})
+        console.log(pageData)
+        this.setState({
+          title: pageData.title,
+          url: pageData.url,
+          body: pageData.body,
+          dateCreated: pageData.dateCreated,
+          timeCreated: pageData.timeCreated,
+          updated: pageData.updated
+        })
       })
       .catch(err => console.log(err));
   }
@@ -39,7 +49,11 @@ class EditPageContainer extends Component {
     const updatedPage = {
       title: this.state.title,
       url: this.state.url,
-      body: this.state.body
+      body: this.state.body,
+      dateCreated: this.state.dateCreated,
+      timeCreated: this.state.timeCreated,
+      updated: new Date().toLocaleString()
+
     }
     axios.put(`https://reactcms-v1.firebaseio.com/pages/${pageId}.json`, updatedPage)
       .then(response => {

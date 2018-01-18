@@ -5,7 +5,9 @@ import './NavItem.css';
 
 const navItem = ({ label, url }) => {
   return (
-    <li className='nav-item'><NavLink exact to={`/${url}`} className='nav-link navlink'>{label}</NavLink></li>
+    <li className='nav-item'>
+      <NavLink exact to={`/${url}`} className='nav-link navlink'>{label}</NavLink>
+    </li>
   );
 }
 

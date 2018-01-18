@@ -9,7 +9,10 @@ class EditUser extends Component {
     lastName: '',
     email: '',
     role: '',
-    authId: ''
+    authId: '',
+    dateCreated: '',
+    timeCreated: '',
+    updated: ''
   }
 
   componentDidMount() {
@@ -18,7 +21,16 @@ class EditUser extends Component {
       .then(response => {
         const userData = response.data;
         console.log(userData)
-        this.setState({firstName: userData.firstName, lastName: userData.lastName, email: userData.email, role: userData.role, authId: userData.authId})
+        this.setState({
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          role: userData.role,
+          authId: userData.authId,
+          dateCreated: userData.dateCreated,
+          timeCreated: userData.timeCreated,
+          updated: userData.updated
+        })
       })
       .catch(err => console.log(err));
   }
@@ -51,7 +63,10 @@ class EditUser extends Component {
       lastName: this.state.lastName,
       email: this.state.email,
       role: this.state.role,
-      authId: this.state.authId
+      authId: this.state.authId,
+      dateCreated: this.state.dateCreated,
+      timeCreated: this.state.timeCreated,
+      updated: new Date().toLocaleString()
     }
     axios.put(`https://reactcms-v1.firebaseio.com/users/${userId}.json`, updatedUser)
       .then(response => {

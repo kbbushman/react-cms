@@ -1,0 +1,11 @@
+.navigation-show {
+  transform: translateX(0);
+}
+
+.navigation-hide {
+  transform: translateX(-100%);
+}
+
+nav.navigation-hide {
+  height: 0;
+}

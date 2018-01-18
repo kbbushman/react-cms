@@ -26,7 +26,9 @@ class AddPostContainer extends Component {
     const newPost = {
       title: this.state.title,
       slug: this.state.slug,
-      body: this.state.body
+      body: this.state.body,
+      dateCreated: new Date().toLocaleDateString(),
+      timeCreated: new Date().toLocaleTimeString()
     }
     axios.post('https://reactcms-v1.firebaseio.com/posts.json', newPost)
       .then(response => {
