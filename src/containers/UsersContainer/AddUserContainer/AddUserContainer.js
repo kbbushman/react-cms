@@ -7,9 +7,7 @@ class AddUser extends Component {
     lastName: '',
     email: '',
     password: '',
-    role: '',
-    dateCreated: '',
-    timeCreated: ''
+    role: ''
   }
 
   onFirstNameChange = (event) => {
@@ -59,8 +57,8 @@ class AddUser extends Component {
       email: email,
       role: this.state.role,
       authId: id,
-      dateCreated: this.state.dateCreated,
-      timeCreated: this.state.timeCreated
+      dateCreated: new Date().toLocaleDateString(),
+      timeCreated: new Date().toLocaleTimeString()
     }
     axios.post('https://reactcms-v1.firebaseio.com/users.json', newUser)
       .then(response => {
