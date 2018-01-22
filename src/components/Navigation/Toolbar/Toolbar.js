@@ -1,17 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import ToolbarItems from './ToolbarItems/ToolbarItems';
 import './Toolbar.css';
 
 const toolbar = (props) => {
-  let attachedClasses = 'navbar navbar-expand-lg toolbar-hide';
+  let attachedClasses = 'navbar navbar-expand-sm toolbar-hide';
   if(props.show) {
-    attachedClasses = 'navbar navbar-expand-lg navbar-dark toolbar-show';
+    attachedClasses = 'navbar navbar-expand-sm navbar-dark toolbar-show';
   }
   return (
     <nav className={attachedClasses} style={{background: '#000'}}>
-      <Link className="navbar-brand" to="/">ReactCMS</Link>
+      {/* <Link className="navbar-brand" to="/">ReactCMS</Link> */}
       <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#toolbarCollapse" aria-controls="toolbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span className="navbar-toggler-icon"></span>
       </button>

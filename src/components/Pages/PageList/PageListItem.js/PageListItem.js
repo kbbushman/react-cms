@@ -9,7 +9,7 @@ const pageListItem = ({ page, deleteClick }) => {
         <tr key={page.id}>
           <td><h5 className='float-left'><Link to={`/dashboard/edit-page/${page.id}`}>{page.title}</Link></h5></td>
           <td>Kenneth Bushman</td>
-          <td>November 25, 2017</td>
+          <td>{page.dateCreated}</td>
           <td>
             <Link className='btn btn-secondary btn-sm mr-2' to={`/${page.url}`}>View</Link>
             <Link className='btn btn-primary btn-sm mr-2' to={`/dashboard/edit-page/${page.id}`}>Edit</Link>

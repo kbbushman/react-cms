@@ -1,12 +1,12 @@
 .Loader {
-  color: #511751;
+  color: #ddd; /* #511751 */
   font-size: 120px;
   text-indent: -9999em;
   overflow: hidden;
   width: 1em;
   height: 1em;
   border-radius: 50%;
-  margin: 25% auto 0;
+  margin: 10% 0 10% 34%;
   position: relative;
   -webkit-transform: translateZ(0);
   -ms-transform: translateZ(0);

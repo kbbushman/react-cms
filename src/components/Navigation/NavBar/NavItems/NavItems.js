@@ -5,7 +5,11 @@ import NavItem from './NavItem/NavItem';
 
 const navItems = (props) => {
   const navItems = props.navList.map(item => {
-    return <NavItem key={item.id} label={item.label} url={item.url} />
+    return (
+      <span key={item.id}>
+        <NavItem  label={item.label} url={item.url} />
+      </span>
+    );
   });
 
   if(!navItems.length) {

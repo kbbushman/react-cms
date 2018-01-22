@@ -1,77 +1,64 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
+import Aux from '../../../hoc/Aux/Aux';
 import Page from '../../../components/Pages/Page/Page';
+import Spinner from '../../../components/UI/Spinner/Spinner';
+import FlashMessage from '../../../components/UI/FlashMessage/FlashMessage';
+import * as actions from '../../../store/actions/index';
 
 class PageContainer extends Component {
-  state = {
-    page: {
-      title: '',
-      url: '',
-      body: '',
-      id: ''
-    }
-  }
 
   componentDidMount() {
-    this.getPage();
-
-    // const pageId = this.props.match.params.id;
-    // // console.log(postId)
-    // axios.get(`https://reactcms-v1.firebaseio.com/pages/${pageId}.json/`)
-    //   .then(response => {
-    //     // const pageData = response.data;
-    //     const pageData = [];
-    //     // console.log(response.data);
-    //     for(let key in response.data) {
-    //       pageData.push({
-    //         ...response.data[key],
-    //         id: key
-    //       });
-    //     }
-    //     this.setState({page: pageData})
-    //   })
-    //   .catch(err => console.log(err));
-  }
-
-  getPage = () => {
-  const pageTitle = this.props.match.params.id;
-  if(this.state.page.url !== pageTitle) {
-    axios.get(`https://reactcms-v1.firebaseio.com/pages.json?orderBy="url"&equalTo="${pageTitle}"`)
-    .then(response => {
-      // const pageData = response.data;
-      let pageData = {};
-      console.log('Response', response);
-      for(let key in response.data) {
-        pageData = {
-          ...response.data[key],
-          id: key
-        };
-      }
-      this.setState({page: pageData})
-    })
-    .catch(err => console.log(err));
-  }
-  
+    // this.getPage();
+    // const pageTitle = this.props.match.params.id;
+    const pageTitle = this.props.history.location.pathname.substr(1);
+    if(this.props.page === null) {
+      this.props.onInitPage(pageTitle);
+      // console.log('CMP OnInitPage()')
+    }
+    
+    console.log(this.props.history.location.pathname.substr(1));
+    // if(this.props.history.location.pathname === '/') {
+    //   console.log(this.props.history);
+    //   this.props.onInitPage('');
+    // }
   }
 
   render () {
-    console.log('Render', this.state.page.url);
-    
-    if(this.state.page.title === '') {
-      return (
-        <div className='container'>
-          <h1>Loading...</h1>
-        </div>
+    // Move Flashmessage to Dashboard
+    let flashMessage = this.props.message ?
+      <FlashMessage error={this.props.error} message={this.props.message} /> : null;
+    let selectedPage = <Spinner />;
+    if(this.props.page) {
+      selectedPage = (
+        <Page page={this.props.page} />
       );
     }
 
-    if(this.state.page.title !== this.props.match.params.id) {
-      this.getPage();
-    }
-
-    return <Page page={this.state.page} />;
+    return (
+      <Aux>
+        {flashMessage}
+        {selectedPage}
+      </Aux>
+    );
   }
 }
 
-export default PageContainer;
+const mapStateToProps = state => {
+  return {
+    page: state.pages.selectedPage,
+    error: state.pages.error,
+    message: state.pages.message,
+    success: state.pages.success
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onInitPage: (pageTitle) => dispatch(actions.getPage(pageTitle))
+  }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PageContainer));

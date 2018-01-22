@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 
 import Aux from '../../hoc/Aux/Aux';
 import NavBar from '../../components/Navigation/NavBar/NavBar';
+import * as actions from '../../store/actions/index';
 
 class Navigation extends Component {
   state = {
@@ -29,6 +32,19 @@ class Navigation extends Component {
     
   }
 
+  componentWillMount() {
+    // will trigger the callback function whenever a new Route renders a component(as long as this component stays mounted as routes change)
+    this.props.history.listen(() => {
+        if(!this.props.history.location.pathname.includes('/dashboard') && this.props.history.location.pathname.substr(1) !== this.props.selectedPage.url) {
+          this.props.onInitPage(this.props.history.location.pathname.substr(1))
+        }
+        // if(!this.props.history.location.pathname.includes('/dashboard')) {
+        //   this.props.onInitPage(this.props.history.location.pathname.substr(1))
+        // }
+        
+    });
+  }
+
   render() {
     if(window.location.pathname.includes('/dashboard')) {
       return null;
@@ -44,4 +60,16 @@ class Navigation extends Component {
   }
 }
 
-export default Navigation;
+const mapDispatchToProps = dispatch => {
+  return {
+    onInitPage: (pageTitle) => dispatch(actions.getPage(pageTitle))
+  }
+}
+
+const mapStateToProps = state => {
+  return {
+    selectedPage: state.pages.selectedPage
+  }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Navigation));
