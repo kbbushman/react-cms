@@ -4,19 +4,10 @@ import { Link } from 'react-router-dom';
 import PageListItem from './PageListItem.js/PageListItem';
 
 const pageList = (props) => {
-  // console.log('Pages Props',  props);
-  const pageList = props.pages.map(page => {
+
+  const pageListItems = props.pages.map(page => {
     return <PageListItem key={page.timeCreated} page={page} deleteClick={(event) => props.deleteClick(event)} />
   });
-
-  if(!props.pages.length) {
-    return (
-      <div className='container mt-5'>
-        <h4>There are no pages to display...</h4>
-        <Link className='btn btn-primary mb-3' to={'/dashboard/add-page'}>Add New Page</Link>
-      </div>
-    );
-  }
 
   return (
     <div className='container'>
@@ -32,7 +23,7 @@ const pageList = (props) => {
           </tr>
         </thead>
         <tbody>
-          {pageList}
+          {pageListItems}
         </tbody>
       </table>
     </div>

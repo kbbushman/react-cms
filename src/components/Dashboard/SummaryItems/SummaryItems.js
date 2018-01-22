@@ -5,7 +5,7 @@ const summaryItems = (props) => {
   return (
     <div className='container'>
       <div className='row'>
-        <main role="main" className="col-sm-9 ml-sm-auto col-md-12">
+        <main role="main" className="col-md-12">
           <h1 className='mb-5'>Dashboard</h1>
           <section className="row text-center placeholders mb-5">
             <div className="col-6 col-sm-3 placeholder">

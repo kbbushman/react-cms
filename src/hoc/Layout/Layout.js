@@ -15,7 +15,6 @@ class Layout extends Component {
   }
 
   render() {
-    console.log('Render', this.state);
     return (
       <Aux>
         <Toolbar show={this.state.showToolbar} showNav={this.showNavHandler} />

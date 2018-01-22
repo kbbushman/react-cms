@@ -1,103 +1,83 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-import axios from 'axios';
+
+import Aux from '../../../hoc/Aux/Aux';
+import FlashMessage from '../../../components/UI/FlashMessage/FlashMessage';
+import Spinner from '../../../components/UI/Spinner/Spinner';
+import EditPageForm from '../../../components/Pages/EditPageForm/EditPageForm';
+import * as actions from '../../../store/actions/index';
 
 class EditPageContainer extends Component {
-  state = {
-    title: '',
-    url: '',
-    body: '',
-    dateCreated: '',
-    timeCreated: '',
-    updated: ''
-  }
+
+  componentWillReceiveProps = (nextProps) => {
+    this.setState({
+      title: nextProps.page.title,
+      url: nextProps.page.url,
+      body: nextProps.page.body,
+      dateCreated: nextProps.page.dateCreated,
+      timeCreated: nextProps.page.timeCreated
+    });
+}
 
   componentDidMount() {
     const pageId = this.props.match.params.id;
-    axios.get(`https://reactcms-v1.firebaseio.com/pages/${pageId}.json/`)
-      .then(response => {
-        const pageData = response.data;
-        console.log(pageData)
-        this.setState({
-          title: pageData.title,
-          url: pageData.url,
-          body: pageData.body,
-          dateCreated: pageData.dateCreated,
-          timeCreated: pageData.timeCreated,
-          updated: pageData.updated
-        })
-      })
-      .catch(err => console.log(err));
+    this.props.onEditPageInit(pageId);
   }
 
-  onTitleChange = (event) => {
-    this.setState({title: event.target.value});
-  }
-
-  onURLChange = (event) => {
-    const cleanUrl = event.target.value.toLowerCase().trim().replace(/[^a-zA-Z0-9 -]+/g, '').replace(/\s+/g, '-');
-    this.setState({url: cleanUrl});
-  }
-
-  onBodyChange = (event) => {
-    this.setState({body: event.target.value});
-  }
-
-  onSubmitHandler = (event) => {
-    event.preventDefault();
+  handleSubmit = (value) => {
+    console.log(value);
     const pageId = this.props.match.params.id;
     const updatedPage = {
-      title: this.state.title,
-      url: this.state.url,
-      body: this.state.body,
-      dateCreated: this.state.dateCreated,
-      timeCreated: this.state.timeCreated,
+      title: value.title,
+      url: value.url,
+      body: value.body,
+      dateCreated: value.dateCreated,
+      timeCreated: value.timeCreated,
       updated: new Date().toLocaleString()
 
     }
-    axios.put(`https://reactcms-v1.firebaseio.com/pages/${pageId}.json`, updatedPage)
-      .then(response => {
-        window.location.reload();
-        // console.log(response);
-        // this.props.history.replace('/pages');
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
-
-  onCancelHandler = () => {
-    this.props.history.replace('/dashboard/pages');
+    this.props.onHandleSubmit(pageId, updatedPage);
   }
 
   render() {
+    if(this.props.success) {
+      window.scrollTo(0, 0);
+    }
+
+    let flashMessage = this.props.message ?
+      <FlashMessage error={this.props.error} success={this.props.success} message={this.props.message} /> : null;
+
+    let editForm = <Spinner />;
+
+    // Add CKEditor
+    if(this.props.page) {
+      editForm = <EditPageForm onSubmit={this.handleSubmit} pageLink={this.props.page.url}/>
+    }
+
     return (
-      <div className='container'>
-        <h1 className='mb-3'>Edit Page </h1>
-        <div style={{overflow: 'hidden'}}>
-          <Link className='btn btn-primary float-right mb-3 mr-2' to={`/${this.state.url}`}>View</Link>
-          <Link className='btn btn-secondary float-right mb-1 mr-2' to={`/dashboard/pages`}>Cancel</Link>
-        </div>
-        <form onSubmit={this.onSubmitHandler}>
-          <div className='form-group'>
-            <label htmlFor='title'>Title</label>
-            <input id='title' className='form-control' type='text' value={this.state.title} placeholder='Title' onChange={(event) => this.onTitleChange(event)} />
-          </div>
-          <div className='form-group'>
-            <label htmlFor='url'>URL</label>
-            <input id='url' className='form-control' type='text' value={this.state.url} placeholder='URL' onChange={(event) => this.onURLChange(event)} />
-          </div>
-          <div className='form-group'>
-            <label htmlFor='body'>Content</label>
-            <textarea id='body' className='form-control' style={{height: '500px', overflowY: 'scroll'}} value={this.state.body} onChange={(event) => this.onBodyChange(event)}></textarea>
-          </div>
-          <button type='submit' className='btn btn-primary float-right'>Save Changes</button>
-          <button type='button' className='btn btn-secondary mr-2 float-right' onClick={this.onCancelHandler}>Cancel</button>
-        </form>
-      </div>
+      <Aux>
+        {flashMessage}
+        {editForm}
+      </Aux>
     );
   }
 }
 
-export default EditPageContainer;
+const mapStateToProps = state => {
+  return {
+    page: state.pages.selectedPage,
+    error: state.pages.error,
+    success: state.pages.success,
+    message: state.pages.message
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onEditPageInit: (pageId) => dispatch(actions.editPageInit(pageId)),
+    onHandleSubmit: (pageId, updatedPage) => dispatch(actions.updatePageSubmit(pageId, updatedPage))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditPageContainer);

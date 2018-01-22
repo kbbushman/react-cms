@@ -1,49 +1,56 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import { connect } from 'react-redux';
 
+import Aux from '../../hoc/Aux/Aux';
 import PageList from '../../components/Pages/PageList/PageList';
+import Spinner from '../../components/UI/Spinner/Spinner';
+import FlashMessage from '../../components/UI/FlashMessage/FlashMessage';
+import * as actions from '../../store/actions/index';
 
 class Pages extends Component {
-  state = {
-    pages: []
-  }
 
   componentDidMount() {
-    this.getPages();
-  }
-
-  getPages = () => {
-    axios.get('https://reactcms-v1.firebaseio.com/pages.json')
-      .then(response => {
-        const pagesData = [];
-        // console.log(response.data);
-        for(let key in response.data) {
-          pagesData.push({
-            ...response.data[key],
-            id: key
-          });
-        }
-        this.setState({pages: pagesData});
-        // console.log(this.state);
-      })
-      .catch(err => console.log(err));
-  }
-
-  deleteClickHandler = (event) => {
-    console.log(event.target.id);
-    const pageId = event.target.id;
-    axios.delete(`https://reactcms-v1.firebaseio.com/pages/${pageId}.json`)
-      .then(response => {
-        // console.log(response);
-        this.getPages();
-      })
-      .catch(err => console.log(err));
+    this.props.onInitPages();
   }
 
   render() {
-    // console.log(this.props);
-    return <PageList pages={this.state.pages} deleteClick={(event) => this.deleteClickHandler(event)} />
+    if(this.props.success) {
+      window.scrollTo(0, 0);
+    }
+    // Move FlashMessage to Dashboard
+    let flashMessage = this.props.message ?
+      <FlashMessage error={this.props.error} message={this.props.message} /> : null;
+    let pageList = <Spinner />;
+    if(this.props.pages.length) {
+      pageList = (
+        <PageList pages={this.props.pages} deleteClick={(event) => this.props.onDeleteClick(event)} />
+      );
+    }
+
+    return (
+      <Aux>
+        {flashMessage}
+        {pageList}
+      </Aux>
+    );
   }
 }
 
-export default Pages;
+const mapStateToProps = state => {
+  return {
+    pages: state.pages.pageArray,
+    loading: state.pages.loading,
+    success: state.pages.success,
+    error: state.pages.error,
+    message: state.pages.message
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onInitPages: () => dispatch(actions.getPages()),
+    onDeleteClick: (event) => dispatch(actions.deletePage(event.target.id))
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Pages);
